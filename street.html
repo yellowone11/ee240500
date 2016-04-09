@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="" />
+    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
+    <link href="default.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="fonts.css" rel="stylesheet" type="text/css" media="all" />
+
+<!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
+   <script language="JavaScript">
+		window.onload = function()
+		{
+            var xpath = new Array();
+            var ypath = new Array();
+            var apath = new Array();
+			////////////////for canvas
+			x = 150;
+			y = 300;
+			i=1;
+			N =0;
+			xtemp=0;
+			ytemp=0;
+           
+			speed = 3;
+			angle = 0;
+			mod = 0;
+			alert('Are you Ready!!!');
+			
+			canvas = document.getElementById("canvas");
+            test = document.getElementById('test');
+			context = canvas.getContext("2d");
+			car = new Image();
+		    car.src="car.png";		
+		    window.addEventListener("keydown", keypress_handler, false);
+		    window.addEventListener("keyup", keyup_handler, false);
+            
+		
+			var move = setInterval(function(){draw();}, 30);
+			////// for  path
+			var path = document.getElementById("path");
+      		
+		};
+		
+		function draw()
+		{
+           
+            ////
+			N =N+1;
+ 			context = canvas.getContext("2d");
+			xtemp = x;
+			ytemp = y;
+            ////
+			x += (speed*mod) * Math.cos(Math.PI/180 * angle);
+			y += (speed*mod) * Math.sin(Math.PI/180 * angle);
+            
+		  if(x<0 || x>canvas.height || y<0 & y>canvas.width )
+		  {
+			x = xtemp;
+			y = ytemp;
+          }
+            ///
+			context.clearRect(x-150, y-150, 300, 300);
+			context.fillStyle="white";
+			context.lineWidth = 3;
+			context.strokeRect(355,350,150,240);
+			context.save();
+			context.translate(x, y);
+			context.rotate(Math.PI/180 * angle);
+			context.drawImage(car, -(car.width/2), -(car.height/2));	
+			context.restore();
+			///
+			ctx = path.getContext('2d');
+            
+			if(angle <= 45)
+			{
+				ctx.fillRect(x,y,2,3);
+			}
+			else
+			{
+				ctx.fillRect(x,y,3,2);
+			}
+			ctx.fillStyle="white";
+			ctx.strokeRect(355,350,150,240)
+			
+      		
+        }
+		function keyup_handler(event)
+		{
+			if(event.keyCode == 78 || event.keyCode == 77)
+			{
+				mod = 0;
+			}
+		}
+		
+		function keypress_handler(event)
+		{
+			console.log(event.keyCode);
+			if(event.keyCode == 81)
+			{
+				mod = 1;
+			}
+			if(event.keyCode == 87)
+			{
+				mod = -1;
+			}
+			if(event.keyCode == 78)
+			{
+				angle -=3;
+			}
+			if(event.keyCode == 77)
+			{
+				angle+=3;
+			}
+		}
+		function AutoPark(event)
+		{
+			context.clearRect(0,0,710,600);
+            ctx.clearRect(0,0,710,600);
+			alert('Press any key to start');
+            
+		}
+      
+		function Finish(event)
+		{
+			if(Math.abs(x-430) < 50 && Math.abs(y-470) < 60)
+			{
+				alert('well done!');
+			}
+			else
+			{
+				alert('sorry you screw up !');
+			}
+		}
+       
+	    </script>
+    	<style type="text/css">
+        	#canvas{
+                border: 3px solid white;
+        	}
+        	#path{
+                border: 3px solid white;
+            }
+    	</style>
+</head>
+<body>
+
+    <div id="header-wrapper">
+      <div id="header" class="container">
+        <div id="logo">
+          <h1><a href="#">Auto parking system</a></h1>
+    </div>
+        <div id="menu">
+          <ul>
+            <li><a href="file:///Users/jeffreyhuang/Desktop/senior%2002/embedded%20system/midterm%20project/javascript/templated-breadth/index.html" accesskey="1" title="">Homepage</a></li>
+            <li class="current_page_item"><a href="#" accesskey="2" title="">Reverse into Garage</a></li>
+            <li><a href="file:///Users/jeffreyhuang/Desktop/senior%2002/embedded%20system/midterm%20project/javascript/templated-breadth/garage.html" accesskey="3" title="">Street Parking</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+	<div>
+		<canvas id="canvas" width="710" height="600"></canvas>
+		<canvas id="path" width="710" height="600"></canvas>
+
+	</div>
+	   
+			<div margin = "100" align="center">
+                 <input type="button" onclick = "AutoPark()" value = "Auto Parking" name="AT" style="width:100px;height:60px;">
+                <input type="button" onclick = "Finish()" value = " Check" name="Finish" style="width:100px;height:60px;">    
+			</div>
+			
+	
+
+</body>
+</html>
